@@ -2,6 +2,8 @@
 
 import requests
 import json
+import csv
+import pandas
 
 api_url = 'https://classic.warcraftlogs.com:443/v1/'
 client_key = '?api_key=bc47c55038353c9ea9a5f32148822099'
@@ -48,7 +50,9 @@ def guild_report_request(guild_name):
 
 def fight_request(report_id):
     return requests.get(api_url + 'report/fights/' + report_id + client_key).json()
-    # lang, fights[{id, boss, start_time, end_time, name, zoneID, zoneName, zoneDifficulty, size, difficulty, kill,...}]
+    # params:   reportID
+    # returns:  lang, fights[{id, boss, start_time, end_time, name, zoneID, zoneName, zoneDifficulty, size, difficulty, kill, partial, 
+    #           inProgress, bossPercentage, fightPercentage, lastPhaseAsAbsoluteIndex, lastPhaseForPercentageDisplay, maps}]
 
 
 def events_request(view, report_id, params):
@@ -68,5 +72,15 @@ def events_request(view, report_id, params):
     #           resilienceDamageTaken, talentTree, talents, pvpTalents, customPowerSet, secondaryCustomPowerSet, tertiaryCustomPowerSet}
 
 
-# tables
-# 
+report_ids = []
+character_ids = []
+
+for parse in character_ranking_request('Duddlez'):
+    report_ids.append(parse.get('reportID'))
+    character_ids.append(parse.get('characterID'))
+
+print(report_ids)
+print(character_ids)
+
+
+    
